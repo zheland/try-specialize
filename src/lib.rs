@@ -14,6 +14,12 @@
 //! fn example_specialize_by_ref<T: ?Sized>(value: &T) -> Option<&str> {
 //!     value.try_specialize_ref()
 //! }
+//! #
+//! # assert_eq!(example_specialize_by_value(123_u32), Ok(123));
+//! # assert_eq!(example_specialize_by_value(123_i32), Err(123));
+//! # assert_eq!(example_specialize_by_ref("foo"), Some("foo"));
+//! # assert_eq!(example_specialize_by_ref(&123), None);
+//! # assert_eq!(example_specialize_by_ref(&[1, 2, 3]), None);
 //! ```
 //!
 //! # Introduction
@@ -351,18 +357,27 @@
 //! #     type Output = T::DecodeError;
 //! # }
 //! #
-//! # let mut buf = Vec::new();
+//! # let mut array_buf = [0; 8];
+//! # let mut buf = &mut array_buf[..];
 //! # [1_u8, 2, 3].encode_to(&mut buf).unwrap();
 //! # 4_u8.encode_to(&mut buf).unwrap();
 //! # [(), (), (), ()].encode_to(&mut buf).unwrap();
-//! # [5_u8, 6].encode_to(&mut buf).unwrap();
-//! # assert_eq!(buf, [1, 2, 3, 4, 5, 6]);
-//! # let buf = &mut buf.as_slice();
+//! # [5_u8, 6, 7, 8].encode_to(&mut buf).unwrap();
+//! # assert!(9_u8.encode_to(&mut buf).is_err());
+//! # assert!([9_u8, 10].encode_to(&mut buf).is_err());
+//! # ().encode_to(&mut buf).unwrap();
+//! # [(), (), ()].encode_to(&mut buf).unwrap();
+//! # assert_eq!(array_buf, [1, 2, 3, 4, 5, 6, 7, 8]);
+//! #
+//! # let buf = &mut array_buf.as_slice();
 //! # assert_eq!(u8::decode_from(buf).unwrap(), 1);
 //! # assert_eq!(<[u8; 4]>::decode_from(buf).unwrap(), [2, 3, 4, 5]);
 //! # assert_eq!(<[(); 16]>::decode_from(buf).unwrap(), [(); 16]);
 //! # assert_eq!(<[u8; 1]>::decode_from(buf).unwrap(), [6]);
+//! # assert_eq!(<[u8; 2]>::decode_from(buf).unwrap(), [7, 8]);
 //! # assert!(u8::decode_from(buf).is_err());
+//! # assert!(<[u8; 1]>::decode_from(buf).is_err());
+//! # assert_eq!(<[(); 2]>::decode_from(buf).unwrap(), [(); 2]);
 //! ```
 //!
 //! Find values by type in generic composite types:
