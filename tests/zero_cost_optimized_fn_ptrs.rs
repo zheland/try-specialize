@@ -94,8 +94,6 @@ fn test_zero_cost_specialization_fn_ptrs() {
     assert_eq!(stats["alloc"].total, expected[1]);
     assert_eq!(stats["std"].total, expected[2]);
 
-    dbg!(&stats);
-
     #[cfg(feature = "__test_extern_fn_merging")]
     {
         if RUST_VERSION_GE_1_82 {
