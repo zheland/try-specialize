@@ -27,35 +27,33 @@ fn example_specialize_by_ref<T: ?Sized>(value: &T) -> Option<&str> {
 ## Introduction
 
 While specialization in Rust can be a tempting solution in many use cases,
-I encourage you to reconsider using traits instead as a more idiomatic
-alternatives. The use of traits is the idiomatic way to achieve polymorphism
-in Rust, promoting better code clarity, reusability, and maintainability.
+it is usually more idiomatic to use traits instead. Traits are the idiomatic
+way to achieve polymorphism in Rust, promoting better code clarity,
+reusability, and maintainability.
 
-However the specialization in Rust can be suitable when you need to
-optimize performance by providing specialized optimized implementations
-for some types without altering the code logic. Also it can be useful
-in highly specific type-level programming related usecases like
-comparisons between types from different libraries.
+However, specialization can be suitable when you need to optimize
+performance by providing specialized implementations for some types without
+altering the code logic. It's also useful in specific, type-level
+programming use cases like comparisons between types from different
+libraries.
 
-For a simple use cases, I recommend checking out the [`castaway`] crate,
-which offers a much simpler API and is easier to work with. On nightly Rust,
-I recommend to use [`min_specialization`] feature instead. Note that Rust
-standard library can and already use [`min_specialization`] in stable for
+For a simple use cases, consider the [`castaway`] crate, which offers a much
+simpler API. On nightly Rust, consider using [`min_specialization`] feature
+instead. The Rust standard library already uses [`min_specialization`] for
 many optimizations. For a more detailed comparison, see the
 [Alternative crates](#alternative-crates) section below.
 
 ## About
 
-This crate provides a comprehensive API for solving various specialization
-challenges to save you from using `unsafe` code or at least to take over
-some of the checks. This crate provides specialization from unconstrained
-types, to unconstrained types, between `'static` types, between types
-references and mutable references, and more.
+This crate offers a comprehensive API for addressing various specialization
+challenges, reducing the need for unsafe code. It provides specialization
+from unconstrained types, to unconstrained types, between 'static types,
+and between type references and mutable references, and more.
 
-<a name="zero-cost"></a> Library tests ensure that the
-specializations are performed at compile time, fully optimized and do not
-come with any run-time cost with `opt-level >= 1`. Note that [release]
-profile uses `opt-level = 3` by default.
+<a name="zero-cost"></a> Library tests ensure that specializations are
+performed at compile time and are fully optimized with no runtime cost at
+`opt-level >= 1`. Note that the [release] profile uses `opt-level = 3`
+by default.
 
 ## Usage
 
@@ -66,19 +64,16 @@ Add this to your `Cargo.toml`:
 try-specialize = "0.1.0"
 ```
 
-Then, in most cases, it will be enough to use [`TrySpecialize`] trait
-methods like [`TrySpecialize::try_specialize`],
-[`TrySpecialize::try_specialize_ref`] and
-[`TrySpecialize::try_specialize_static`]. If you want to check the
-possibility of specialization in advance and then use it infallibly multiple
-times including using reversed or mapped specialization, check
-[`Specialization`] struct methods.
+Then, you can use [`TrySpecialize`] trait methods like
+[`TrySpecialize::try_specialize`], [`TrySpecialize::try_specialize_ref`] and
+[`TrySpecialize::try_specialize_static`]. To check the possibility of
+specialization in advance and use it infallibly multiple times, including
+reversed or mapped specialization, use [`Specialization`] struct methods.
 
-Note that even in expression position, unlike casting, [subtyping], and
-[coercion], specialization does not alter the underlying type or its data.
-It only qualifies the underlying types of generics. Specialization from a
-generic type `T1` to another generic type `T2` succeeds only when the
-underlying types of T1 and T2 are equal.
+Note that unlike casting, [subtyping], and [coercion], specialization does
+not alter the underlying type or data. It merely qualifies the underlying
+types of generics, succeeding only when the underlying types of `T1` and
+`T2` are equal.
 
 ## Examples
 
@@ -161,11 +156,10 @@ fn func<K, V>(value: hashbrown::HashMap<K, V>) {
 }
 ```
 
-You can also check out a more comprehensive example that implements custom
-data encoders and decoders with customizable per-type encoding and decoding
-errors and optimized byte array encoding and decoding. The full example is
-available at at: [`examples/encode.rs`].
-The part of the example related to the `Encode` implementation for a slice:
+For a more comprehensive example, see the [`examples/encode.rs`], which
+implements custom data encoders and decoders with per-type encoding and
+decoding errors and optimized byte array encoding and decoding.
+The part of this example related to the `Encode` implementation for a slice:
 ```rust
 // ...
 
@@ -269,48 +263,45 @@ assert_eq!(input.find::<(char, bool)>(), Some(&('a', false)));
 - `std` (enabled by default): enables `alloc` feature and [`LifetimeFree`]
   implementations for `std` types, like `OsStr`, `Path`, `PathBuf`,
   `Instant`, `HashMap` etc.
-- `unreliable`: enables unreliable functions, methods and macros that rely
-  on Rust standard library undocumented behavior. See [`unreliable`] module
+- `unreliable`: enables functions, methods and macros that rely on Rust
+  standard library undocumented behavior. Refer to the [`unreliable`] module
   documentation for details.
 
 ## How it works
 
-- Type comparison when both types are `'static` is performed using
-  [`TypeId::of`] comparison.
-- Type comparison when one of types is [`LifetimeFree`] is performed by
-  converting type wrapped as `&dyn PhantomData<T>` to `&dyn PhantomData<T> +
-  'static` and comparing their [`TypeId::of`].
-- Specialization is performed using type comparison and [`transmute_copy`]
-  when the equality of types is proved.
-- Unreliable trait implementation check is performed using an expected, but
-  undocumented behavior of the Rust stdlib [`PartialEq`] implementation for
-  [`Arc<T>`]. [`Arc::eq`] uses fast path comparing references before
+- Type comparison between `'static` types compares their [`TypeId::of`]s.
+- Type comparison between unconstrained and [`LifetimeFree`] type treats
+  them as `'static` and compares their [`TypeId::of`]s.
+- Specialization relies on type comparison and [`transmute_copy`] when the
+  equality of types is established.
+- Unreliable trait implementation checks are performed using an expected,
+  but undocumented behavior of the Rust stdlib [`PartialEq`] implementation
+  for [`Arc<T>`]. [`Arc::eq`] uses fast path comparing references before
   comparing data if `T` implements [`Eq`].
 
 ## Alternative crates
 
-- [`castaway`]: A very similar crate and a great simpler alternative that
-  can cover most usecases. Its macro uses [Autoref-Based Specialization] and
-  automatically determines the appropriate type of specialization, making it
-  much easier to use. However, if no specialization is applicable because of
-  the same [Autoref-Based Specialization], the compiler generates completely
-  unclear errors, which makes it difficult to use it in complex cases. Uses
-  `unsafe` code for type comparison and specialization.
+- [`castaway`]: A similar crate with a much simpler macro-based API. The
+  macro uses [Autoref-Based Specialization] and automatically determines the
+  appropriate type of specialization, making it much easier to use. However,
+  if no specialization is applicable because of the same [Autoref-Based
+  Specialization], the compiler generates completely unclear errors, which
+  makes it difficult to use it in complex cases. Internally uses `unsafe`
+  code for type comparison and specialization.
 - [`coe-rs`]: Smaller and simpler, but supports only static types and don't
-  safely combine type equality check and specialization. Uses `unsafe` code
-  for type specialization.
+  safely combine type equality check and specialization. Internally uses
+  `unsafe` code for type specialization.
 - [`downcast-rs`]: Specialized on trait objects (`dyn`) downcasting. Can't
-  be used to specialize unconstrained types. Doesn't use `unsafe` code.
+  be used to specialize unconstrained types.
 - [`syllogism`] and [`syllogism_macro`]: Requires to provide all possible
   types to macro that generate a lot of boilerplate code and can't be used
-  to specialize stdlib types because of orphan rules. Doesn't use `unsafe`
-  code.
+  to specialize stdlib types because of orphan rules.
 - [`specialize`](https://crates.io/crates/specialize): Requires nightly.
   Adds a simple macro to inline nightly [`min_specialization`] usage into
   simple `if let` expressions.
 - [`specialized-dispatch`]: Requires nightly. Adds a macro to inline nightly
   [`min_specialization`] usage into a `match`-like macro.
-- [`spez`]: Specializes expression types, using[Autoref-Based
+- [`spez`]: Specializes expression types, using [Autoref-Based
   Specialization]. It won't works in generic context but can be used in the
   code generated by macros.
 - [`impls`]: Determine if a type implements a trait. Can't detect erased

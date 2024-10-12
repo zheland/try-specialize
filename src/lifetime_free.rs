@@ -5,22 +5,22 @@
 
 /// A marker trait for types that do not contain any lifetime parameters.
 ///
-/// Such types are safe to cast from non-static type parameters if their types
-/// are equal. This trait is used to determine safe specialization methods in
-/// [`TrySpecialize`] trait and safe constructor for [`Specialization`]. The
+/// Such types are safe to specialize from non-static type parameters if their
+/// types are equal. This trait is used to determine safe specialization methods
+/// in [`TrySpecialize`] trait and safe constructor for [`Specialization`]. The
 /// `LifetimeFree` bound is stricter than `'static` bound. All `LifetimeFree`
 /// types are also `'static`, but the reverse is not true.
 ///
-/// This trait is not automatically generated for all lifetime free types.
+/// This trait is **not** automatically generated for all lifetime free types.
 /// Use [`Specialization::rev`] to specialize from a `LifetimeFree`
 /// type to an unconstrained type.
 ///
 /// # Safety
 ///
-/// When implementing this trait for a `struct`, `enum` or `union` type, you
+/// When implementing this trait for a `struct`, `enum`, or `union` type, you
 /// must ensure that the type does **not** contain any lifetime parameters.
 /// When implementing this trait for a type alias, you must ensure that the
-/// underlying `struct`, `enum` or `union` type does **not** contain any
+/// underlying `struct`, `enum`, or `union` type does **not** contain any
 /// lifetime parameters.
 ///
 /// Note, however, that the use of `'static` values in type fields is allowed.
@@ -33,11 +33,11 @@
 /// Whereas for `T: LifetimeFree` the
 /// `struct Fourth<T>(&'static str, Cow<'static, T>)` and its aliases can be
 /// considered as lifetime free types, since the underlying struct has no
-/// lifetime parameters. It only has fields with lifetimes, which that is
-/// allowed. Therefore it is safe to
+/// lifetime parameters. It only has fields with lifetimes, which is allowed.
+/// Therefore, it is safe to
 /// `impl LifetimeFree<T> for Fourth<T> where T: LifetimeFree {}`.
 ///
-/// Implementing this trait for types which uses lifetimes may result to
+/// Implementing this trait for types which uses lifetimes may result in
 /// *[undefined behavior]*.
 ///
 /// [undefined behavior]: https://doc.rust-lang.org/reference/behavior-considered-undefined.html

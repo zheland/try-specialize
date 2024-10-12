@@ -16,9 +16,9 @@ use crate::{static_type_eq, type_eq, type_eq_ignore_lifetimes, LifetimeFree, Typ
 /// `Specialization` trait refers to a lower-level API. Prefer to use
 /// [`TrySpecialize`] trait methods if applicable.
 ///
-/// Library tests ensure that the specializations are fully optimized and
-/// become zero-cost with `opt-level >= 1`. Note that release profile uses
-/// `opt-level = 3` by default.
+/// Library tests ensure that the specializations are performed at compile time
+/// and are fully optimized with no runtime cost at `opt-level >= 1`. Note that
+/// the release profile uses `opt-level = 3` by default.
 ///
 /// Constructors cheat sheet:
 /// | Type bounds | Constructor |
@@ -62,19 +62,26 @@ where
     /// Checks the types `T1` and `T2` for equality and returns the
     /// specialization provider if types are equal.
     ///
-    /// Note that this method requires source type to implement `LifetimeFree`.
+    /// Note that this method requires source type to implement
+    /// [`LifetimeFree`].
     /// Use `Specialization::try_new().rev()` method to check the target
     /// type instead.
-    /// `LifetimeFree` is not automatically derived and implemented only for a
-    /// set of types without lifetimes.
+    /// The [`LifetimeFree`] trait is **not** automatically derived for all
+    /// lifetime-free types. The library only implements it for standard library
+    /// types that do not have any lifetime parameters.
     ///
     /// For simple cases consider using [`TrySpecialize`] methods like
     /// [`try_specialize`],
     /// [`try_specialize_ref`], and
     /// [`try_specialize_mut`] instead.
-    ///
     /// You can use [`Specialization::try_new_static`] if both types are
     /// `'static`.
+    ///
+    /// [`LifetimeFree`]: crate::LifetimeFree
+    /// [`TrySpecialize`]: crate::TrySpecialize
+    /// [`try_specialize`]: crate::TrySpecialize::try_specialize
+    /// [`try_specialize_ref`]: crate::TrySpecialize::try_specialize_ref
+    /// [`try_specialize_mut`]: crate::TrySpecialize::try_specialize_mut
     ///
     /// # Examples
     ///
@@ -138,11 +145,6 @@ where
     /// assert_eq!(placeholder::<f64>(), 123.456);
     /// assert_eq!(placeholder::<i128>(), 0);
     /// ```
-    ///
-    /// [`TrySpecialize`]: crate::TrySpecialize
-    /// [`try_specialize`]: crate::TrySpecialize::try_specialize
-    /// [`try_specialize_ref`]: crate::TrySpecialize::try_specialize_ref
-    /// [`try_specialize_mut`]: crate::TrySpecialize::try_specialize_mut
     #[inline]
     #[must_use]
     pub fn try_new() -> Option<Self>
@@ -163,7 +165,6 @@ where
     /// [`try_specialize_static`],
     /// [`try_specialize_ref_static`], and
     /// [`try_specialize_mut_static`] instead.
-    ///
     /// You can use [`Specialization::try_new`] if the target type
     /// implements [`LifetimeFree`] trait or
     /// `Specialization::try_new().rev()` if the source type implements

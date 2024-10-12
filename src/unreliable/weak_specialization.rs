@@ -6,26 +6,26 @@ use crate::{type_eq_ignore_lifetimes, Specialization};
 ///
 /// # Reliability
 ///
-/// While it is unlikely, there is still a possibility that functions of this
-/// module future will returning false negatives in the future Rust versions.
+/// While it is unlikely, there is still a possibility that the methods of this
+/// trait may return false negatives in future Rust versions.
 ///
-/// The correctness of the returned result of the function depends on
-/// the following:
-/// - Documented behavior that if `T` implements `Eq`, two `Rc`s that
-///   point to the same allocation are always equal:
+/// The correctness of the results returned by the methods depends on the
+/// following:
+/// - Documented behavior that if `T` implements `Eq`, two `Rc`s that point to
+///   the same allocation are always equal:
 ///   <https://doc.rust-lang.org/1.81.0/std/rc/struct.Rc.html#method.eq>.
-/// - Undocumented behavior that the implementation of `Rc::partial_eq` for `T:
-///   Eq` will not `PartialEq::eq` if both `Rc`s point to the same allocation.
-/// - Assumption that the undocumented short-circuit behavior described above
-///   will be retained for optimization purposes.
+/// - Undocumented behavior that the `Rc::partial_eq` implementation for `T: Eq`
+///   will not use `PartialEq::eq` if both `Rc`s point to the same memory
+///   location.
+/// - The assumption that the undocumented short-circuit behavior described
+///   above will be retained for optimization purposes.
 ///
-/// There is no formal guarantee that the undocumented behavior
-/// described above will be retained. If the implementation is changed
-/// in a future Rust version, the function may return a false negative,
-/// that is, return `false`, even though `T` implements the trait.
-/// However, the implementation guarantees that a false positive result
-/// is impossible, i.e., the function will never return true if `T` does
-/// not implement the trait in any future Rust version.
+/// There is no formal guarantee that the undocumented behavior described above
+/// will be retained. If the implementation changes in a future Rust version,
+/// the function may return a false negative, that is, it may return `false`,
+/// even though `T` implements the trait. However, the implementation guarantees
+/// that a false positive result is impossible, i.e., the function will never
+/// return true if `T` does not implement the trait in any future Rust version.
 ///
 /// Details:
 /// - <https://internals.rust-lang.org/t/rc-uses-visibly-behavior-changing-specialization-is-that-okay/16173/6>,
@@ -37,10 +37,13 @@ pub trait WeakSpecialization: Sized {
     /// specialization provider if types implement `LifetimeFree` and the types
     /// are equal.
     ///
-    /// Note that `LifetimeFree` is not automatically derived and implemented
-    /// only for a set of types without lifetimes. This function uses
+    /// The [`LifetimeFree`] trait is **not** automatically derived for all
+    /// lifetime-free types. The library only implements it for standard library
+    /// types that do not have any lifetime parameters. This function uses
     /// `impls_lifetime_free` to check wherever the unconstrained type
     /// implements `LifetimeFree` trait or not.
+    ///
+    /// [`LifetimeFree`]: crate::LifetimeFree
     #[must_use]
     fn try_new_if_lifetime_free_weak() -> Option<Self>;
 }

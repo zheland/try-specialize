@@ -7,9 +7,9 @@ use crate::LifetimeFree;
 ///
 /// This method requires only `T2` to implement [`LifetimeFree`] trait.
 ///
-/// Library tests ensure that the type comparisons are fully optimized and
-/// become zero-cost with `opt-level >= 1`. Note that release profile uses
-/// `opt-level = 3` by default.
+/// Library tests ensure that type comparisons are performed at compile time and
+/// are fully optimized with no runtime cost at `opt-level >= 1`. Note that the
+/// release profile uses `opt-level = 3` by default.
 ///
 /// [`LifetimeFree`]: crate::LifetimeFree
 ///
@@ -52,9 +52,9 @@ where
 ///
 /// This method requires both `T1` and `T2` to be `'static`.
 ///
-/// Library tests ensure that the type comparisons are fully optimized and
-/// become zero-cost with `opt-level >= 1`. Note that release profile uses
-/// `opt-level = 3` by default.
+/// Library tests ensure that type comparisons are performed at compile time and
+/// are fully optimized with no runtime cost at `opt-level >= 1`. Note that the
+/// release profile uses `opt-level = 3` by default.
 ///
 /// # Examples
 ///
@@ -103,9 +103,9 @@ where
 ///
 /// Note that all the lifetimes are erased and not accounted for.
 ///
-/// Library tests ensure that the type comparisons are fully optimized and
-/// become zero-cost with `opt-level >= 1`. Note that release profile uses
-/// `opt-level = 3` by default.
+/// Library tests ensure that type comparisons are performed at compile time and
+/// are fully optimized with no runtime cost at `opt-level >= 1`. Note that the
+/// release profile uses `opt-level = 3` by default.
 ///
 /// # Examples
 ///

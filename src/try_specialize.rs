@@ -6,9 +6,9 @@ use crate::{LifetimeFree, Specialization};
 /// conversions. You can use [`Specialization`] directly if you need to perform
 /// more complex specialization cases or to cache the specializable ability.
 ///
-/// Library tests ensure that the specializations are fully optimized and
-/// become zero-cost with `opt-level >= 1`. Note that release profile uses
-/// `opt-level = 3` by default.
+/// Library tests ensure that the specializations are performed at compile time
+/// and are fully optimized with no runtime cost at `opt-level >= 1`. Note that
+/// the release profile uses `opt-level = 3` by default.
 ///
 /// Methods cheat sheet:
 /// | Bounds\Operation | specialize `T1` to `T2` | specialize `&T1` to `&T2` | specialize `&mut T1` to `&mut T2` |
@@ -46,8 +46,11 @@ pub trait TrySpecialize {
     /// Use [`TrySpecialize::try_specialize_static`] if both source and target
     /// type have `'static` bounds.
     ///
-    /// [`LifetimeFree`] is not automatically derived and implemented only for a
-    /// set of types without lifetimes.
+    /// The [`LifetimeFree`] trait is **not** automatically derived for all
+    /// lifetime-free types. The library only implements it for standard library
+    /// types that do not have any lifetime parameters.
+    ///
+    /// [`LifetimeFree`]: crate::LifetimeFree
     ///
     /// # Examples
     ///
@@ -100,6 +103,11 @@ pub trait TrySpecialize {
     /// source type doesn't have [`LifetimeFree`] bound but target type does.
     /// Use [`TrySpecialize::try_specialize_static`] if both target and source
     /// type have `'static` bounds.
+    /// The [`LifetimeFree`] trait is **not** automatically derived for all
+    /// lifetime-free types. The library only implements it for standard library
+    /// types that do not have any lifetime parameters.
+    ///
+    /// [`LifetimeFree`]: crate::LifetimeFree
     ///
     /// # Examples
     ///
@@ -237,8 +245,12 @@ pub trait TrySpecialize {
     /// Note that this method requires target type to implement
     /// [`LifetimeFree`]. Use [`TrySpecialize::try_specialize_from_ref`] if your
     /// target type doesn't implement [`LifetimeFree`] but source type does.
-    /// [`LifetimeFree`] is not automatically derived and implemented only for a
-    /// set of types without lifetimes.
+    ///
+    /// The [`LifetimeFree`] trait is **not** automatically derived for all
+    /// lifetime-free types. The library only implements it for standard library
+    /// types that do not have any lifetime parameters.
+    ///
+    /// [`LifetimeFree`]: crate::LifetimeFree
     ///
     /// # Examples
     ///
@@ -288,8 +300,11 @@ pub trait TrySpecialize {
     /// Note that this method requires source type to implement
     /// [`LifetimeFree`]. Use [`TrySpecialize::try_specialize_ref`] if your
     /// source type doesn't implement [`LifetimeFree`] but target type does.
-    /// [`LifetimeFree`] is not automatically derived and implemented only
-    /// for a set of types without lifetimes.
+    /// The [`LifetimeFree`] trait is **not** automatically derived for all
+    /// lifetime-free types. The library only implements it for standard library
+    /// types that do not have any lifetime parameters.
+    ///
+    /// [`LifetimeFree`]: crate::LifetimeFree
     #[inline]
     fn try_specialize_from_ref<T>(other: &T) -> Option<&Self>
     where
@@ -317,8 +332,12 @@ pub trait TrySpecialize {
     /// Note that this method requires target type to implement
     /// [`LifetimeFree`]. Use [`TrySpecialize::try_specialize_from_mut`] if your
     /// target type doesn't implement [`LifetimeFree`] but source type does.
-    /// [`LifetimeFree`] is not automatically derived and implemented only for a
-    /// set of types without lifetimes.
+    ///
+    /// The [`LifetimeFree`] trait is **not** automatically derived for all
+    /// lifetime-free types. The library only implements it for standard library
+    /// types that do not have any lifetime parameters.
+    ///
+    /// [`LifetimeFree`]: crate::LifetimeFree
     #[inline]
     fn try_specialize_mut<T>(&mut self) -> Option<&mut T>
     where
@@ -333,8 +352,11 @@ pub trait TrySpecialize {
     /// Note that this method requires source type to implement
     /// [`LifetimeFree`]. Use [`TrySpecialize::try_specialize_mut`] if your
     /// source type doesn't implement [`LifetimeFree`] but target type does.
-    /// [`LifetimeFree`] is not automatically derived and implemented only
-    /// for a set of types without lifetimes.
+    /// The [`LifetimeFree`] trait is **not** automatically derived for all
+    /// lifetime-free types. The library only implements it for standard library
+    /// types that do not have any lifetime parameters.
+    ///
+    /// [`LifetimeFree`]: crate::LifetimeFree
     #[inline]
     fn try_specialize_from_mut<T>(other: &mut T) -> Option<&mut Self>
     where
