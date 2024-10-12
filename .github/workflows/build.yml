@@ -73,15 +73,19 @@ jobs:
     defaults:
       run:
         working-directory: ./tests/no-alloc-and-no-std
+    env:
+      FLAGS: >-
+        --config build.rustflags=["-C","link-arg=-nostartfiles"]
+        --manifest-path tests/no-alloc-and-no-std/Cargo.toml
     steps:
       - uses: actions/checkout@v4
       - run: rustup toolchain install stable --profile minimal
-      - run: cargo build --features panic-handler
-      - run: cargo build --features alloc,panic-handler,global-allocator
-      - run: cargo build --features alloc,std,global-allocator
-      - run: if cargo build; then false; else true; fi
-      - run: if cargo build --features alloc,panic-handler; then false; else true; fi
-      - run: if cargo build --features alloc,std,panic-handler,global-allocator; then false; else true; fi
+      - run: cargo build $FLAGS --features panic-handler
+      - run: cargo build $FLAGS --features alloc,panic-handler,global-allocator
+      - run: cargo build $FLAGS --features alloc,std,global-allocator
+      - run: if cargo build $FLAGS; then false; else true; fi
+      - run: if cargo build $FLAGS --features alloc,panic-handler; then false; else true; fi
+      - run: if cargo build $FLAGS --features alloc,std,panic-handler,global-allocator; then false; else true; fi
 
   cargo-deny:
     name: Check licenses/bans/advisories/sources

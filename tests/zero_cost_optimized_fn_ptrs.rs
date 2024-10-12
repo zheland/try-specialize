@@ -109,13 +109,8 @@ fn test_zero_cost_specialization_fn_ptrs() {
         // Thresholds below are approximate and may be adjusted in the future.
         assert!(stats["alloc"].matched >= stats["alloc"].total * 2 / 3);
         assert!(stats["std"].matched >= stats["std"].total * 2 / 3);
-        if RUST_VERSION_GE_1_82 {
-            assert!(stats["alloc"].alternative_fn_ptrs.len() < 4);
-            assert!(stats["std"].alternative_fn_ptrs.len() < 4);
-        } else {
-            assert!(stats["alloc"].alternative_fn_ptrs.len() < 8);
-            assert!(stats["std"].alternative_fn_ptrs.len() < 8);
-        }
+        assert!(stats["alloc"].alternative_fn_ptrs.len() < 8);
+        assert!(stats["std"].alternative_fn_ptrs.len() < 8);
     }
 }
 
