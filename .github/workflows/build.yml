@@ -76,7 +76,7 @@ jobs:
     env:
       FLAGS: >-
         --config build.rustflags=["-C","link-arg=-nostartfiles"]
-        --manifest-path tests/no-alloc-and-no-std/Cargo.toml
+        --manifest-path ${GITHUB_WORKSPACE}/tests/no-alloc-and-no-std/Cargo.toml
     steps:
       - uses: actions/checkout@v4
       - run: rustup toolchain install stable --profile minimal
