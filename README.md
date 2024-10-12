@@ -61,7 +61,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-try-specialize = "0.1.0"
+try-specialize = "0.1.1"
 ```
 
 Then, you can use [`TrySpecialize`] trait methods like
@@ -565,7 +565,7 @@ additional terms or conditions.
 [`min_specialization`]: https://github.com/rust-lang/rust/pull/68970
 [`min_spec...`]: https://github.com/rust-lang/rust/pull/68970 "min_specialization"
 
-[`examples/encode.rs`]: https://github.com/zheland/try-specialize/blob/v0.1.0/examples/encode.rs
+[`examples/encode.rs`]: https://github.com/zheland/try-specialize/blob/v0.1.1/examples/encode.rs
 
 [`std::any::TypeId`]: https://doc.rust-lang.org/std/any/struct.TypeId.html
 [`TypeId`]: https://doc.rust-lang.org/std/any/struct.TypeId.html "std::any::TypeId"

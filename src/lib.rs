@@ -59,7 +59,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! try-specialize = "0.1.0"
+//! try-specialize = "0.1.1"
 //! ```
 //!
 //! Then, you can use [`TrySpecialize`] trait methods like
@@ -789,7 +789,7 @@
 //! [`min_specialization`]: https://github.com/rust-lang/rust/pull/68970
 //! [`min_spec...`]: https://github.com/rust-lang/rust/pull/68970 "min_specialization"
 //!
-//! [`examples/encode.rs`]: https://github.com/zheland/try-specialize/blob/v0.1.0/examples/encode.rs
+//! [`examples/encode.rs`]: https://github.com/zheland/try-specialize/blob/v0.1.1/examples/encode.rs
 //!
 //! [`TypeId`]: std::any::TypeId
 //! [`TypeId::of`]: std::any::TypeId::of

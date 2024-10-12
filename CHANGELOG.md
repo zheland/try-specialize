@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2024-10-11
+## [0.1.1] - 2024-10-12
+### Changed
+- Improve docs and readme readability.
+
+## [0.1.1] - 2024-10-12
 ### Added
 - `LifetimeFree` trait and implementation for Rust stdlib types.
 - `type_eq` functions for `'static` and non-`'static` types.
@@ -22,5 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub CI integration.
 - Check and utility scripts.
 
-[Unreleased]: https://github.com/zheland/unwind-context/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/zheland/unwind-context/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/zheland/typed-index-collections/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/zheland/typed-index-collections/compare/v0.0.0...v0.1.0

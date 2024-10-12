@@ -1,6 +1,6 @@
 [package]
 name = "try-specialize"
-version = "0.1.0"
+version = "0.1.1"
 authors = [ "Andrey Zheleznov <zheland.net@gmail.com>" ]
 edition = "2021"
 rust-version = "1.81.0"
