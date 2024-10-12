@@ -1,5 +1,14 @@
 # try-specialize
 
+[![Build Status](https://github.com/zheland/try-specialize/workflows/build/badge.svg)](https://github.com/zheland/try-specialize/actions)
+[![Latest Version](https://img.shields.io/crates/v/try-specialize.svg)](https://crates.io/crates/try-specialize)
+[![Documentation](https://docs.rs/try-specialize/badge.svg)](https://docs.rs/try-specialize)
+[![Codecov](https://codecov.io/gh/zheland/try-specialize/graph/badge.svg)](https://codecov.io/gh/zheland/try-specialize)
+[![Dependencies status](https://deps.rs/repo/github/zheland/try-specialize/status.svg)](https://deps.rs/repo/github/zheland/try-specialize)
+[![Downloads](https://img.shields.io/crates/d/try-specialize)](https://crates.io/crates/try-specialize)
+[![License](https://img.shields.io/crates/l/try-specialize)](https://github.com/zheland/try-specialize/#license)
+[![MSRV 1.81+](https://img.shields.io/badge/rustc-1.81+-blue.svg)](https://blog.rust-lang.org/2024/09/05/Rust-1.81.0.html)
+
 The `try-specialize` crate provides limited, [zero-cost](#zero-cost)
 specialization in generic context on stable Rust.
 

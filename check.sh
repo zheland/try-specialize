@@ -101,7 +101,7 @@ normalize_docs() {
         | $readme awk '
             BEGIN { is_content=0 }
             is_content==1 { print; next }
-            /^(# .*||!\[|\[!\[)$/ { next } # Ignore title, empty line and images.
+            /^(# .*||!\[.*|\[!\[.*)$/ { next } # Ignore title, empty line and images.
             is_content==0 { is_content=1; print; next }
         ' \
         | comment "Remove '//!' lines from lib.rs" \
