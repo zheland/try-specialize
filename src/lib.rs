@@ -233,6 +233,36 @@
 //! #     }
 //! # }
 //! #
+//! # impl<T> Encode for Box<T>
+//! # where
+//! #     T: Encode,
+//! # {
+//! #     type EncodeError = T::EncodeError;
+//! #
+//! #     #[inline]
+//! #     fn encode_to<W>(&self, writer: &mut W) -> Result<(), Self::EncodeError>
+//! #     where
+//! #         W: ?Sized + Write,
+//! #     {
+//! #         T::encode_to(self, writer)
+//! #     }
+//! # }
+//! #
+//! # impl<T> Decode for Box<T>
+//! # where
+//! #     T: Decode,
+//! # {
+//! #     type DecodeError = T::DecodeError;
+//! #
+//! #     #[inline]
+//! #     fn decode_from<R>(reader: &mut R) -> Result<Self, Self::DecodeError>
+//! #     where
+//! #         R: ?Sized + Read,
+//! #     {
+//! #         Ok(Self::new(T::decode_from(reader)?))
+//! #     }
+//! # }
+//! #
 //! # impl Encode for u8 {
 //! #     type EncodeError = io::Error;
 //! #
@@ -362,11 +392,12 @@
 //! # [1_u8, 2, 3].encode_to(&mut buf).unwrap();
 //! # 4_u8.encode_to(&mut buf).unwrap();
 //! # [(), (), (), ()].encode_to(&mut buf).unwrap();
-//! # [5_u8, 6, 7, 8].encode_to(&mut buf).unwrap();
+//! # [5_u8, 6, 7, 8].map(Box::new).encode_to(&mut buf).unwrap();
 //! # assert!(9_u8.encode_to(&mut buf).is_err());
 //! # assert!([9_u8, 10].encode_to(&mut buf).is_err());
 //! # ().encode_to(&mut buf).unwrap();
 //! # [(), (), ()].encode_to(&mut buf).unwrap();
+//! # assert!([9_u8, 10].map(Box::new).encode_to(&mut buf).is_err());
 //! # assert_eq!(array_buf, [1, 2, 3, 4, 5, 6, 7, 8]);
 //! #
 //! # let buf = &mut array_buf.as_slice();
@@ -374,10 +405,14 @@
 //! # assert_eq!(<[u8; 4]>::decode_from(buf).unwrap(), [2, 3, 4, 5]);
 //! # assert_eq!(<[(); 16]>::decode_from(buf).unwrap(), [(); 16]);
 //! # assert_eq!(<[u8; 1]>::decode_from(buf).unwrap(), [6]);
-//! # assert_eq!(<[u8; 2]>::decode_from(buf).unwrap(), [7, 8]);
+//! # assert_eq!(
+//! #     <[Box<u8>; 2]>::decode_from(buf).unwrap(),
+//! #     [Box::new(7), Box::new(8)]
+//! # );
 //! # assert!(u8::decode_from(buf).is_err());
 //! # assert!(<[u8; 1]>::decode_from(buf).is_err());
 //! # assert_eq!(<[(); 2]>::decode_from(buf).unwrap(), [(); 2]);
+//! # assert!(<[Box<u8>; 2]>::decode_from(buf).is_err());
 //! ```
 //!
 //! Find values by type in generic composite types:
