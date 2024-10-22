@@ -312,7 +312,8 @@ assert_eq!(input.find::<(char, bool)>(), Some(&('a', false)));
 
 |  | crate <br /> `try-specialize` | crate <br /> [`castaway`] | crate <br /> [`coe-rs`] | crate <br /> [`downcast-rs`] | crate <br /> [`syllogism`] | [`min_spec...`] <br /> nightly feature | crate <br /> [`specialize`](https://crates.io/crates/specialize) | crate <br /> [`spec...ch`]
 | --: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
-| Rust toolchain | **Stable** | **Stable** | **Stable** | **Stable** | **Stable** | Nightly | Nightly | Nightly  |
+| Checked version | `0.1.1` | `0.2.3` | `0.1.2` | `1.2.1` | `0.1.3` | N/A | `0.0.3` | `0.2.1` |
+| Rust toolchain | **Stable** | **Stable** | **Stable** | **Stable** | **Stable** | Nightly | Nightly | Nightly |
 | API complexity | Complex | **Simple** | **Simple** | Moderate | **Simple** | **Simple** | **Simple** | **Simple** |
 | API difficulty | Difficult | **Easy** | **Easy** | Moderate | Moderate | **Easy** | **Easy** | Moderate |
 | Zero-cost (compile-time optimized) | **YES** | **YES** | **YES** | no | **YES** | **YES** | **YES** | **YES** |
