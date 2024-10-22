@@ -2,6 +2,7 @@
 #![expect(unused_crate_dependencies, reason = "okay in tests")]
 #![cfg(not(miri))]
 #![cfg(not(debug_assertions))] // Requires `profile.opt-level >= 1`
+#![cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 
 use try_specialize::TrySpecialize;
 

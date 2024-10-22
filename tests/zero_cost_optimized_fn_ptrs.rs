@@ -65,18 +65,21 @@ fn test_zero_cost_specialization_fn_ptrs() {
                     ty2
                 );
 
-                let valid_expected = if ty1 == ty2 {
-                    valid_ret_true_fn_asm()
-                } else {
-                    valid_ret_false_fn_asm()
-                };
+                #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+                {
+                    let valid_expected = if ty1 == ty2 {
+                        valid_ret_true_fn_asm()
+                    } else {
+                        valid_ret_false_fn_asm()
+                    };
 
-                assert!(
-                    valid_expected
-                        .iter()
-                        .any(|expected| cmp_fn_asm(tested_fn_ptr, expected)),
-                    "Generated function is not matched to any expected one"
-                );
+                    assert!(
+                        valid_expected
+                            .iter()
+                            .any(|expected| cmp_fn_asm(tested_fn_ptr, expected)),
+                        "Generated function is not matched to any expected one"
+                    );
+                }
             }
         }
         stats.total += 1;
