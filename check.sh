@@ -26,7 +26,7 @@ min_covered_functions_percent=95
 min_covered_lines_percent=90
 min_covered_regions_percent=90
 crate_docs_link="https://docs.rs/try-specialize/latest/try_specialize"
-crate_docs_ignored_lines_regex=$'^\01(L|T) \[`transmute`\]: .*$'
+crate_docs_ignored_lines_regex=$'^(L|T) \[`transmute`\]: .*$'
 
 # ================================================================
 # Common check script code
@@ -107,55 +107,55 @@ normalize_docs() {
         | comment "Remove '//!' lines from lib.rs" \
         | $libdoc rg '^//!' \
         | $libdoc rg '^//! ?' -r '' \
-        | comment "Add "\x01C " prefix for markdown code lines." \
-        | comment "Add "\x01T " prefix for other markdown lines." \
+        | comment "Add "C " prefix for markdown code lines." \
+        | comment "Add "T " prefix for other markdown lines." \
         | awk '
             BEGIN { is_code=0 }
-            /^```.*$/ { print "\001" "C " $0; is_code=!is_code; next }
-            is_code==0 { print "\001" "T " $0; next }
-            is_code==1 { print "\001" "C " $0; next }
+            /^```.*$/ { print "C " $0; is_code=!is_code; next }
+            is_code==0 { print "T " $0; next }
+            is_code==1 { print "C " $0; next }
         ' \
         | comment "Remove hidden portions from lib.rs doc examples." \
-        | $libdoc rg -v $'^\01C #( |$)' \
+        | $libdoc rg -v $'^C #( |$)' \
         | comment "Decrease all headers level in README.md." \
-        | $readme rg --passthru $'^\01T #(#+) (.*)' -r $'\01T $1 $2' \
+        | $readme rg --passthru $'^T #(#+) (.*)' -r $'T $1 $2' \
         | comment "Convert rust stdlib links to rust paths in README.md." \
-        | comment "Use "\x01L " prefix for markdown lines with link references." \
+        | comment "Use "L " prefix for markdown lines with link references." \
         | $readme rg --passthru \
-            $'^\01T \[(.*)\]: https://doc\.rust-lang\.org/(std|core)/(?:(?:(?:([^/]*)/)?([^/]*)/)?([^/]*)/)?(?:struct|enum|trait|fn|primitive|macro)\.([^/]*)\.html(#| |$)' \
-            -r $'\01L [$1]: $2::$3::$4::$5::$6$7' \
+            $'^T \[(.*)\]: https://doc\.rust-lang\.org/(std|core)/(?:(?:(?:([^/]*)/)?([^/]*)/)?([^/]*)/)?(?:struct|enum|trait|fn|primitive|macro)\.([^/]*)\.html(#| |$)' \
+            -r $'L [$1]: $2::$3::$4::$5::$6$7' \
         | comment "Convert rust stdlib module links to rust paths in README.md." \
         | $readme rg --passthru \
-            $'^\01T \[(.*)\]: https://doc\.rust-lang\.org/(std|core)/(?:(?:(?:([^/]*)/)?([^/]*)/)?([^/]*)/)?index\.html(#| |$)' \
-            -r $'\01L [$1]: $2::$3::$4::$5$6' \
+            $'^T \[(.*)\]: https://doc\.rust-lang\.org/(std|core)/(?:(?:(?:([^/]*)/)?([^/]*)/)?([^/]*)/)?index\.html(#| |$)' \
+            -r $'L [$1]: $2::$3::$4::$5$6' \
         | comment "Convert crate links to rust paths in README.md." \
         | $readme rg --passthru \
-            $'^\01T \[(.*)\]: '"$crate_docs_link"$'/(?:(?:(?:([^/]*)/)?([^/]*)/)?([^/]*)/)?(?:struct|enum|trait|fn|primitive|macro)\.([^/]*)\.html(#| |$)' \
-            -r $'\01L [$1]: $2::$3::$4::$5$6' \
+            $'^T \[(.*)\]: '"$crate_docs_link"$'/(?:(?:(?:([^/]*)/)?([^/]*)/)?([^/]*)/)?(?:struct|enum|trait|fn|primitive|macro)\.([^/]*)\.html(#| |$)' \
+            -r $'L [$1]: $2::$3::$4::$5$6' \
         | comment "Convert crate module links to rust paths in README.md." \
         | $readme rg --passthru \
-            $'^\01T \[(.*)\]: '"$crate_docs_link"$'/(?:(?:(?:([^/]*)/)?([^/]*)/)?([^/]*)/)?index\.html(#| |$)' \
-            -r $'\01L [$1]: $2::$3::$4$5' \
+            $'^T \[(.*)\]: '"$crate_docs_link"$'/(?:(?:(?:([^/]*)/)?([^/]*)/)?([^/]*)/)?index\.html(#| |$)' \
+            -r $'L [$1]: $2::$3::$4$5' \
         | comment "Remove artifact "::::" and starting "::" in paths after the previous link convertions." \
         | $readme rg --passthru \
-            $'^\01L \[(.*)\]: ([^:]*)::(?:::)+' -r $'\01L [$1]: $2::' \
+            $'^L \[(.*)\]: ([^:]*)::(?:::)+' -r $'L [$1]: $2::' \
         | $readme rg --passthru \
-            $'^\01L \[(.*)\]: ::' -r $'\01L [$1]: ' \
+            $'^L \[(.*)\]: ::' -r $'L [$1]: ' \
         | comment "Convert link methods to rust paths in README.md." \
         | $readme rg --passthru \
-            $'^\01L \[(.*)\]: (.*)#method\.' -r $'\01L [$1]: $2$3::' \
+            $'^L \[(.*)\]: (.*)#method\.' -r $'L [$1]: $2$3::' \
         | comment "Remove link titles that now duplicates rust path in README.md." \
         | $readme rg --pcre2 --passthru \
-            $'^\01L \[(.*)\]: ([^ ]*) "\\2"' -r $'\01L [$1]: $2' \
+            $'^L \[(.*)\]: ([^ ]*) "\\2"' -r $'L [$1]: $2' \
         | comment "Remove link references that now duplicates rust path in README.md" \
-        | $readme rg --pcre2 -v $'^\01L \[`(.*)`\]: \\1$' \
-        | $readme rg -U --pcre2 --passthru $'^(\01L .*)\n\01T \n(?:\01T \n)+(\01L .*)$' -r $'$1\n\n$2' \
+        | $readme rg --pcre2 -v $'^L \[`(.*)`\]: \\1$' \
+        | $readme rg -U --pcre2 --passthru $'^(L .*)\nT \n(?:T \n)+(L .*)$' -r $'$1\n\n$2' \
         | comment "Ignore specified lines" \
         | rg -v "$crate_docs_ignored_lines_regex" \
         | comment "Remove temporary prefixes." \
-        | rg --passthru $'\01T ' -r '' \
-        | rg --passthru $'\01C ' -r '' \
-        | rg --passthru $'\01L ' -r '' \
+        | rg --passthru $'T ' -r '' \
+        | rg --passthru $'C ' -r '' \
+        | rg --passthru $'L ' -r '' \
         | tee
 
     set -eo pipefail
