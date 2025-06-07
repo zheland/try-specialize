@@ -572,7 +572,7 @@ mod tests {
             // SAFETY: Specialization from `Cow<'a, T>` to `Cow<'a, str>`
             // will always have equal lifetimes because `str` is [`LifetimeFree`].
             unsafe {
-                try_spec_erased::<_, Cow<'a, str>>(value).map_or(false, |value| value == "foobar")
+                try_spec_erased::<_, Cow<'a, str>>(value).is_ok_and(|value| value == "foobar")
             }
         }
 
