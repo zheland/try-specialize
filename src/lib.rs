@@ -9,17 +9,21 @@
 //!
 //! fn example_specialize_by_value<T>(value: T) -> Result<u32, T> {
 //!     value.try_specialize()
+//!     // Same as: `<T as TrySpecialize>::try_specialize::<u32>(value)`.
+//!     // `try_specialize::<T>` specializes from `Self` to `T, where T: LifetimeFree`.
 //! }
 //!
 //! fn example_specialize_by_ref<T: ?Sized>(value: &T) -> Option<&str> {
 //!     value.try_specialize_ref()
+//!     // Same as: `<T as TrySpecialize>::try_specialize_ref::<str>(value)`.
+//!     // `try_specialize_ref::<T>` specializes from `&Self` to `&T, where T: LifetimeFree`.
 //! }
-//! #
-//! # assert_eq!(example_specialize_by_value(123_u32), Ok(123));
-//! # assert_eq!(example_specialize_by_value(123_i32), Err(123));
-//! # assert_eq!(example_specialize_by_ref("foo"), Some("foo"));
-//! # assert_eq!(example_specialize_by_ref(&123), None);
-//! # assert_eq!(example_specialize_by_ref(&[1, 2, 3]), None);
+//!
+//! assert_eq!(example_specialize_by_value(123_u32), Ok(123));
+//! assert_eq!(example_specialize_by_value(123_i32), Err(123));
+//! assert_eq!(example_specialize_by_ref("foo"), Some("foo"));
+//! assert_eq!(example_specialize_by_ref(&123_u32), None);
+//! assert_eq!(example_specialize_by_ref(&[1, 2, 3]), None);
 //! ```
 //!
 //! # Introduction
@@ -86,8 +90,9 @@
 //!         Err(value) => default_impl(value),
 //!     }
 //! }
-//! # fn specialized_impl(_value: (u32, String)) {}
-//! # fn default_impl<T>(_value: T) {}
+//!
+//! fn specialized_impl(_value: (u32, String)) {}
+//! fn default_impl<T>(_value: T) {}
 //! # func((42_u32, "abc".to_owned()));
 //! # func((42_i32, "abc".to_owned()));
 //! # }
@@ -106,8 +111,9 @@
 //!         Err(value) => default_impl(value),
 //!     }
 //! }
-//! # fn specialized_impl(_value: (u32, &'static str)) {}
-//! # fn default_impl<T>(_value: T) {}
+//!
+//! fn specialized_impl(_value: (u32, &'static str)) {}
+//! fn default_impl<T>(_value: T) {}
 //! # func((42_u32, "abc"));
 //! # func((42_i32, "abc"));
 //! ```
@@ -126,8 +132,9 @@
 //!         None => default_impl(value),
 //!     }
 //! }
-//! # fn specialized_impl(_value: &str) {}
-//! # fn default_impl<T: ?Sized>(_value: &T) {}
+//!
+//! fn specialized_impl(_value: &str) {}
+//! fn default_impl<T: ?Sized>(_value: &T) {}
 //! # func("abc");
 //! # func(&42);
 //! ```
@@ -146,10 +153,9 @@
 //!         None => default_impl(value),
 //!     }
 //! }
-//! # fn specialized_impl(_value: &mut [u8]) {}
-//! # fn default_impl<T: ?Sized>(_value: &mut T) {
-//! #     core::hint::black_box(());
-//! # }
+//!
+//! fn specialized_impl(_value: &mut [u8]) {}
+//! fn default_impl<T: ?Sized>(_value: &mut T) {}
 //! # func(&mut [1_u8, 2, 3][..]);
 //! # func(&mut [1_i8, 2, 3][..]);
 //! ```
@@ -172,8 +178,9 @@
 //!         default_impl(value);
 //!     }
 //! }
-//! # fn default_impl<K, V>(_value: hashbrown::HashMap<K, V>) {}
-//! # fn specialized_impl(_value: hashbrown::HashMap<u32, char>) {}
+//!
+//! fn default_impl<K, V>(_value: hashbrown::HashMap<K, V>) {}
+//! fn specialized_impl(_value: hashbrown::HashMap<u32, char>) {}
 //! # func([(12_u32, 'a'), (23_u32, 'b')].into_iter().collect());
 //! # func([(12_i32, 'a'), (23_i32, 'b')].into_iter().collect());
 //! ```

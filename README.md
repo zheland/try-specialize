@@ -17,11 +17,21 @@ use try_specialize::TrySpecialize;
 
 fn example_specialize_by_value<T>(value: T) -> Result<u32, T> {
     value.try_specialize()
+    // Same as: `<T as TrySpecialize>::try_specialize::<u32>(value)`.
+    // `try_specialize::<T>` specializes from `Self` to `T, where T: LifetimeFree`.
 }
 
 fn example_specialize_by_ref<T: ?Sized>(value: &T) -> Option<&str> {
     value.try_specialize_ref()
+    // Same as: `<T as TrySpecialize>::try_specialize_ref::<str>(value)`.
+    // `try_specialize_ref::<T>` specializes from `&Self` to `&T, where T: LifetimeFree`.
 }
+
+assert_eq!(example_specialize_by_value(123_u32), Ok(123));
+assert_eq!(example_specialize_by_value(123_i32), Err(123));
+assert_eq!(example_specialize_by_ref("foo"), Some("foo"));
+assert_eq!(example_specialize_by_ref(&123_u32), None);
+assert_eq!(example_specialize_by_ref(&[1, 2, 3]), None);
 ```
 
 ## Introduction
@@ -87,6 +97,9 @@ fn func<T>(value: T) {
         Err(value) => default_impl(value),
     }
 }
+
+fn specialized_impl(_value: (u32, String)) {}
+fn default_impl<T>(_value: T) {}
 ```
 
 Specialize `'static` type to any `'static` type:
@@ -102,6 +115,9 @@ where
         Err(value) => default_impl(value),
     }
 }
+
+fn specialized_impl(_value: (u32, &'static str)) {}
+fn default_impl<T>(_value: T) {}
 ```
 
 Specialize `Sized` or `Unsized` type reference to any [`LifetimeFree`] type
@@ -118,6 +134,9 @@ where
         None => default_impl(value),
     }
 }
+
+fn specialized_impl(_value: &str) {}
+fn default_impl<T: ?Sized>(_value: &T) {}
 ```
 
 Specialize `Sized` or `Unsized` type mutable reference to any
@@ -134,6 +153,9 @@ where
         None => default_impl(value),
     }
 }
+
+fn specialized_impl(_value: &mut [u8]) {}
+fn default_impl<T: ?Sized>(_value: &mut T) {}
 ```
 
 Specialize a third-party library container with generic types:
@@ -154,6 +176,9 @@ fn func<K, V>(value: hashbrown::HashMap<K, V>) {
         default_impl(value);
     }
 }
+
+fn default_impl<K, V>(_value: hashbrown::HashMap<K, V>) {}
+fn specialized_impl(_value: hashbrown::HashMap<u32, char>) {}
 ```
 
 For a more comprehensive example, see the [`examples/encode.rs`], which
