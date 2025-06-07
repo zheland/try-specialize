@@ -32,16 +32,17 @@ unreliable = []
 
 # Internal private feature.
 # Enables function merging check tests for generated extern test fns.
-# Requires `profile.opt-level >= 2` if used for tests.
+# Requires `profile.opt-level >= 2` when used with `cargo test`.
 __test_extern_fn_merging = []
 
 # Internal private feature.
 # Enables dead code elimination check tests for generated extern test fns.
-# Requires `profile.opt-level >= 2` if used for tests.
+# Requires `profile.opt-level >= 2` when used with `cargo test`.
 __test_extern_fn_dce = []
 
 # Internal private feature.
 # Enables tests that require nightly rust toolchain.
+# Requires `nightly` toolchain when used with `cargo test`.
 __test_nightly = []
 
 [dependencies]
