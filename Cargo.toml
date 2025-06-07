@@ -50,10 +50,10 @@ __test_nightly = []
 [dev-dependencies]
 castaway = "0.2.3"
 coe-rs = "0.1.2"
-downcast-rs = "1.2.1"
-hashbrown = "0.15.0"
+downcast-rs = "2.0.1"
+hashbrown = "0.15.4"
 paste = "1.0.15"
-rustversion = "1.0.17"
+rustversion = "1.0.21"
 specialize = "0.0.3"
 specialized-dispatch = "0.2.1"
 syllogism = "0.1.3"
