@@ -4,3 +4,9 @@ allow = [
     "Apache-2.0",
 ]
 confidence-threshold = 0.99
+
+
+[[advisories.ignore]]
+id = "RUSTSEC-2024-0436"
+reason = "ignore unmaintained paste dev-dependency crate"
+# See https://github.com/rustsec/advisory-db/pull/2215#issuecomment-2709315704
