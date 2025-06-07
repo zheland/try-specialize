@@ -1,6 +1,6 @@
 [package]
 name = "no-alloc-and-no-std-test"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Andrey Zheleznov <zheland.net@gmail.com>"]
 edition = "2021"
 publish = false

@@ -412,7 +412,7 @@ where
     /// ```
     ///
     /// More realistic example can be found at
-    /// [`examples/encode.rs`](https://github.com/zheland/try-specialize/blob/v0.1.1/examples/encode.rs).
+    /// [`examples/encode.rs`](https://github.com/zheland/try-specialize/blob/v0.1.2/examples/encode.rs).
     ///
     /// [`TrySpecialize`]: crate::TrySpecialize
     /// [`try_specialize_from`]: crate::TrySpecialize::try_specialize_from
@@ -502,7 +502,7 @@ where
     /// Custom data encoders and decoders with customizable per-type encoding
     /// and decoding errors and optimized byte array encoding and decoding.
     /// Full example code is available at
-    /// [`examples/encode.rs`](https://github.com/zheland/try-specialize/blob/v0.1.1/examples/encode.rs).
+    /// [`examples/encode.rs`](https://github.com/zheland/try-specialize/blob/v0.1.2/examples/encode.rs).
     /// ```rust
     /// # use core::convert::Infallible;
     /// # use core::{array, slice};

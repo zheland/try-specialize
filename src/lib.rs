@@ -63,7 +63,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! try-specialize = "0.1.1"
+//! try-specialize = "0.1.2"
 //! ```
 //!
 //! Then, you can use [`TrySpecialize`] trait methods like
@@ -533,7 +533,7 @@
 //!
 //! |  | crate <br /> `try-specialize` | crate <br /> [`castaway`] | crate <br /> [`coe-rs`] | crate <br /> [`downcast-rs`] | crate <br /> [`syllogism`] | [`min_spec...`] <br /> nightly feature | crate <br /> [`specialize`](https://crates.io/crates/specialize) | crate <br /> [`spec...ch`]
 //! | --: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
-//! | Checked version | `0.1.1` | `0.2.3` | `0.1.2` | `1.2.1` | `0.1.3` | N/A | `0.0.3` | `0.2.1` |
+//! | Checked version | `0.1.2` | `0.2.3` | `0.1.2` | `1.2.1` | `0.1.3` | N/A | `0.0.3` | `0.2.1` |
 //! | Rust toolchain | **Stable** | **Stable** | **Stable** | **Stable** | **Stable** | Nightly | Nightly | Nightly |
 //! | API complexity | Complex | **Simple** | **Simple** | Moderate | **Simple** | **Simple** | **Simple** | **Simple** |
 //! | API difficulty | Difficult | **Easy** | **Easy** | Moderate | Moderate | **Easy** | **Easy** | Moderate |
@@ -797,7 +797,7 @@
 //! [`min_specialization`]: https://github.com/rust-lang/rust/pull/68970
 //! [`min_spec...`]: https://github.com/rust-lang/rust/pull/68970 "min_specialization"
 //!
-//! [`examples/encode.rs`]: https://github.com/zheland/try-specialize/blob/v0.1.1/examples/encode.rs
+//! [`examples/encode.rs`]: https://github.com/zheland/try-specialize/blob/v0.1.2/examples/encode.rs
 //!
 //! [`TypeId`]: std::any::TypeId
 //! [`TypeId::of`]: std::any::TypeId::of
