@@ -7,7 +7,7 @@
 [![Dependencies status](https://deps.rs/repo/github/zheland/try-specialize/status.svg)](https://deps.rs/repo/github/zheland/try-specialize)
 [![Downloads](https://img.shields.io/crates/d/try-specialize)](https://crates.io/crates/try-specialize)
 [![License](https://img.shields.io/crates/l/try-specialize)](https://github.com/zheland/try-specialize/#license)
-[![MSRV 1.81+](https://img.shields.io/badge/rustc-1.81+-blue.svg)](https://blog.rust-lang.org/2024/09/05/Rust-1.81.0.html)
+[![MSRV 1.82+](https://img.shields.io/badge/rustc-1.82+-blue.svg)](https://blog.rust-lang.org/2024/10/17/Rust-1.82.0/)
 
 The `try-specialize` crate provides limited, [zero-cost](#zero-cost)
 specialization in generic context on stable Rust.

@@ -8,7 +8,7 @@ toolchains_param_set=(
     "stable|"
     "beta|"
     "nightly|--features __test_nightly"
-    "1.81.0|"
+    "1.82.0|"
 )
 all_features=( "" "alloc" "std" "unreliable" )
 test_opt_level1_args="--release --features alloc,std,unreliable"

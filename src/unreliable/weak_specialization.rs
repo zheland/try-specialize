@@ -13,7 +13,7 @@ use crate::{type_eq_ignore_lifetimes, Specialization};
 /// following:
 /// - Documented behavior that if `T` implements `Eq`, two `Rc`s that point to
 ///   the same allocation are always equal:
-///   <https://doc.rust-lang.org/1.81.0/std/rc/struct.Rc.html#method.eq>.
+///   <https://doc.rust-lang.org/1.82.0/std/rc/struct.Rc.html#method.eq>.
 /// - Undocumented behavior that the `Rc::partial_eq` implementation for `T: Eq`
 ///   will not use `PartialEq::eq` if both `Rc`s point to the same memory
 ///   location.
@@ -30,7 +30,7 @@ use crate::{type_eq_ignore_lifetimes, Specialization};
 /// Details:
 /// - <https://internals.rust-lang.org/t/rc-uses-visibly-behavior-changing-specialization-is-that-okay/16173/6>,
 /// - <https://users.rust-lang.org/t/hack-to-specialize-w-write-for-vec-u8/100366>,
-/// - <https://doc.rust-lang.org/1.81.0/std/rc/struct.Rc.html#method.eq>,
+/// - <https://doc.rust-lang.org/1.82.0/std/rc/struct.Rc.html#method.eq>,
 /// - <https://github.com/rust-lang/rust/issues/42655>.
 pub trait WeakSpecialization: Sized {
     /// Checks the types `T1` and `T2` for equality and returns the

@@ -32,7 +32,7 @@ use crate::LifetimeFree;
 /// the following:
 /// - Documented behavior that if `T` implements `Eq`, two `Rc`s that point to
 ///   the same allocation are always equal:
-///   <https://doc.rust-lang.org/1.81.0/std/rc/struct.Rc.html#method.eq>.
+///   <https://doc.rust-lang.org/1.82.0/std/rc/struct.Rc.html#method.eq>.
 /// - Undocumented behavior that the `Rc::partial_eq` implementation for `T: Eq`
 ///   will not use `PartialEq::eq` if both `Rc`s point to the same memory
 ///   location.
@@ -49,7 +49,7 @@ use crate::LifetimeFree;
 /// Details:
 /// - <https://internals.rust-lang.org/t/rc-uses-visibly-behavior-changing-specialization-is-that-okay/16173/6>,
 /// - <https://users.rust-lang.org/t/hack-to-specialize-w-write-for-vec-u8/100366>,
-/// - <https://doc.rust-lang.org/1.81.0/std/rc/struct.Rc.html#method.eq>,
+/// - <https://doc.rust-lang.org/1.82.0/std/rc/struct.Rc.html#method.eq>,
 /// - <https://github.com/rust-lang/rust/issues/42655>.
 ///
 /// # Examples
@@ -169,7 +169,7 @@ macro_rules! define_impls_trait_ignore_lt_fn {
             /// on the following:
             /// - Documented behavior that if `T` implements `Eq`, two `Rc`s
             ///   that point to the same allocation are always equal:
-            ///   <https://doc.rust-lang.org/1.81.0/std/rc/struct.Rc.html#method.eq>.
+            ///   <https://doc.rust-lang.org/1.82.0/std/rc/struct.Rc.html#method.eq>.
             /// - Undocumented behavior that the `Rc::partial_eq` implementation
             ///   for `T: Eq` will not use `PartialEq::eq` if both `Rc`s point
             ///   to the same memory location.
@@ -188,7 +188,7 @@ macro_rules! define_impls_trait_ignore_lt_fn {
             /// Details:
             /// - <https://internals.rust-lang.org/t/rc-uses-visibly-behavior-changing-specialization-is-that-okay/16173/6>,
             /// - <https://users.rust-lang.org/t/hack-to-specialize-w-write-for-vec-u8/100366>,
-            /// - <https://doc.rust-lang.org/1.81.0/std/rc/struct.Rc.html#method.eq>,
+            /// - <https://doc.rust-lang.org/1.82.0/std/rc/struct.Rc.html#method.eq>,
             /// - <https://github.com/rust-lang/rust/issues/42655>.
             ///
             $( #[$meta2] )*
